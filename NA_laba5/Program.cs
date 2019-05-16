@@ -22,16 +22,25 @@ namespace NA_laba5
             //2.4 использовать метод простых итераций для всех ε.
 
             double a = -3, b = 3;
-            int interval = 50;
+            int interval = 10;
+            double epsilon = Math.Pow(10, -4);
             Separation(a, b, interval);
 
 
+            double a1 = -2.40;
+            double b1 = -1.80;
+            Console.WriteLine("Метод бисекций");
+            Console.WriteLine(Clarification_Bisection(a1, b1, epsilon));
+            //Console.WriteLine(Clarification_Bisection(1.92, 2.04, epsilon));
 
+            Console.WriteLine("Метод ньютона");
+            Console.WriteLine(Clarification_Newton(a1, b1, epsilon));
             Console.ReadLine();
         }
         public static double Func1(double x)
         {
-            return Math.Pow(3, x) - 2 * x - 5;
+            //return Math.Pow(3, x) - 2 * x - 5;
+            return Math.Pow(x, 3) - 4 * x + 2;
         }
         public static double Func2(double x)
         {
@@ -58,30 +67,58 @@ namespace NA_laba5
             else if (res > 0) Console.WriteLine(string.Format("{0:F2}\t{1:F2}\t+", b, res));
             else Console.WriteLine(string.Format("{0:F2}\t{1:F2}\t0", b, res));
         }
-        public static double Clarification_Bisection(double a, double b, double epsilon)
+        public static string Clarification_Bisection(double a, double b, double epsilon)
         {
+            string s = "a\tc\tb\tf(a)\tf(c)\tf(b)\t|b-a|\n";
             while (b - a > epsilon)
             {
-                double c = (b - a) / 2;
+                double c = (a+b) / 2;
+                s +=Math.Round( a,4) + "\t" + Math.Round(c, 4) + "\t" + Math.Round(b, 4) + "\t";
                 double f_c = Func1(c);
-                if (f_c == 0) return c;
+                if (f_c == 0) break; 
                 else
                 {
                     double f_a = Func1(a);
                     double f_b = Func1(b);
+                    s += Math.Round(a, 4) + "\t" + Math.Round(c, 4) + "\t" + Math.Round(b,4) + "\t";
                     if (f_c * f_a > 0) a = c;
                     if (f_c * f_b > 0) b = c;
                 }
+
+                s += (b -a).ToString() + "\n";
             }
-            return (b - a) / 2;
+            s += "Корень равен " + (a + b) / 2;
+            return s;
         }
-        public static void Clarification_Newton(double a, double b, int interval)
+        public static string Clarification_Newton(double a, double b, double epsilon)
         {
-
+            string s = "n\tx\tf(x)\t|Xn+1 - Xn|\n";
+            double f_x = Func1(a);
+            s += "0\t"+a + "\t" + f_x + "\t" + (f_x-a).ToString() + "\n";
+            int c = 1;
+            while (f_x - a > epsilon)
+            {
+                s +=c+"\t"+ a + "\t" + f_x + "\t" + (f_x - a).ToString() + "\n";
+                a = f_x;
+                f_x = Func1(a);c++;
+            }
+            s += "Корень равен " + (f_x - a) / 2;
+            return s;
         }
-        public static void Clarification_Chorda(double a, double b, int interval)
+        public static void Clarification_Chorda(double a, double b,double epsilon)
         {
-
+            string s = "n\tx\tf(x)\t|Xn+1 - Xn|\n";
+            double f_x = Func1(a);
+            s += "0\t" + a + "\t" + f_x + "\t" + (f_x - a).ToString() + "\n";
+            int c = 1;
+            while (f_x - a > epsilon)
+            {
+                s += c + "\t" + a + "\t" + f_x + "\t" + (f_x - a).ToString() + "\n";
+                a = f_x;
+                f_x = Func1(a); c++;
+            }
+            s += "Корень равен " + (f_x - a) / 2;
+            return s;
         }
     }
 }
