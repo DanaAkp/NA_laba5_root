@@ -50,6 +50,11 @@ namespace NA_laba5
         {
             return 2 * Math.Atan(x) - 3 * x + 2;
         }
+
+        public static double func1_Proizz(double x)
+        {
+            return 3 * x * x - 4;
+        }
         public static void Separation(double a, double b, int interval)
         {
             Console.WriteLine("x\tF(x)\tSign");
@@ -93,31 +98,39 @@ namespace NA_laba5
         public static string Clarification_Newton(double a, double b, double epsilon)
         {
             string s = "n\tx\tf(x)\t|Xn+1 - Xn|\n";
-            double f_x = Func1(a);
-            s += "0\t"+a + "\t" + f_x + "\t" + (f_x-a).ToString() + "\n";
+            double f_x = Func1(a); 
+            double f_x_1= func1_Proizz(a);
+            double x_n = a - f_x / f_x_1;
+            s += "0\t"+a + "\t" + f_x + "\t" + (x_n - a).ToString() + "\n";
             int c = 1;
-            while (f_x - a > epsilon)
+            while (x_n - a > epsilon)
             {
-                s +=c+"\t"+ a + "\t" + f_x + "\t" + (f_x - a).ToString() + "\n";
-                a = f_x;
-                f_x = Func1(a);c++;
+                a = x_n;
+                f_x = Func1(a);
+                f_x_1 = func1_Proizz(a);
+                x_n = a - f_x / f_x_1;
+                s += c + "\t" + a + "\t" + f_x + "\t" + (x_n - a).ToString() + "\n";
+                c++;
             }
-            s += "Корень равен " + (f_x - a) / 2;
+            s += "Корень равен " + x_n;
             return s;
         }
-        public static void Clarification_Chorda(double a, double b,double epsilon)
+        public static string Clarification_Chorda(double a, double b,double epsilon)
         {
             string s = "n\tx\tf(x)\t|Xn+1 - Xn|\n";
+
             double f_x = Func1(a);
-            s += "0\t" + a + "\t" + f_x + "\t" + (f_x - a).ToString() + "\n";
+            //s += "0\t" + a + "\t" + f_x + "\t" + (f_x - a).ToString() + "\n";
             int c = 1;
             while (f_x - a > epsilon)
             {
-                s += c + "\t" + a + "\t" + f_x + "\t" + (f_x - a).ToString() + "\n";
+                //s += c + "\t" + a + "\t" + f_x + "\t" + (f_x - a).ToString() + "\n";
                 a = f_x;
                 f_x = Func1(a); c++;
             }
-            s += "Корень равен " + (f_x - a) / 2;
+           
+            
+            //s += "Корень равен " + (f_x - a) / 2;
             return s;
         }
     }
